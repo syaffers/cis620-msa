@@ -133,7 +133,6 @@ def build_guiding_tree(distance_matrix, sequences):
     :param sequences: List of input sequences
     :return: tuple of tuples representing the guiding tree
     """
-    tree = tuple()
     n = len(sequences)
     helper_vector = [i for i in sequences]
 
@@ -143,6 +142,10 @@ def build_guiding_tree(distance_matrix, sequences):
         # there may be multiple closest units so cluster the first
         nearest_is, nearest_js = np.where(q_mat == np.amin(q_mat))
         nearest_i, nearest_j = nearest_is[0], nearest_js[0]
+
+        # handle when all remaining units are close to each other
+        if nearest_j == 0 and nearest_i == 0:
+            nearest_j = 1
 
         # get the distance of the clustered unit
         d_fg = distance_matrix[nearest_i, nearest_j]
